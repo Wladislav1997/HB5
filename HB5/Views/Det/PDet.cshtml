@@ -1,0 +1,16 @@
+﻿@model HB5.Models.P
+@{
+    ViewBag.Title = "Просмотр совершонной операции";
+}
+<div class="container">
+    <dl class="dl-horizontal">
+        <dt>Имя</dt>
+        <dd>@Model.Name</dd>
+        <dt>Процент</dt>
+        <dd>@Model.Data</dd>
+        <dt>Сумма</dt>
+        <dd>@Model.Sum</dd>
+        <dt>Коментарий</dt>
+        <dd>@Model.Coment</dd>
+    </dl>
+</div>

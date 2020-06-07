@@ -1,0 +1,43 @@
+﻿@model HB5.Models.Plan
+@{
+    ViewBag.Title = "Удаление Плана";
+}
+<div class="container">
+    <form asp-action="PlanDet" asp-controller="Det">
+        <div class="form-group">
+            <label asp-for="Name" class="control-label">Название</label>
+            <input type="text" asp-for="Name" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="Data" class="control-label">Дата начала периода</label>
+            <input type="datetime-local" asp-for="Data" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="DataPeriod" class="control-label">Дата конца периода</label>
+            <input type="datetime-local" asp-for="DataPeriod" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="Period" class="control-label">Период</label>
+            <input type="text" asp-for="Period" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="Procent" class="control-label">Процент выполнения </label>
+            <input type="number" asp-for="Procent" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="DochMonth" class="control-label">Общий доход</label>
+            <input type="number" asp-for="DochMonth" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="RasMonth" class="control-label">Общий расход</label>
+            <input type="number" asp-for="RasMonth" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="RaznDochRas" class="control-label">Общий итог</label>
+            <input type="number" asp-for="RaznDochRas" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Назад" class="btn btn-default" />
+        </div>
+    </form>
+</div>
