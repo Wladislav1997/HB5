@@ -142,20 +142,8 @@
                         <td>@i.Procent</td>
                         <td><a asp-action="PlanDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
                         <td><a asp-action="OperHome" asp-controller="Home" asp-route-idplan="@i.Id">Операции</a></td>
-
-                        @{
-                            bool s = true;
-                        }
-                        @foreach (Operation op in i.Operations)
-                        {
-                            @if (op.p != null)
-                            {
-                                s = false;
-                                break;
-                            }
-
-                        }
-                        @if (s)
+   
+                        @if (i.Data>DateTime.Now)
                         {
                             <td><a asp-action="PlanDel" asp-controller="Del" asp-route-id="@i.Id">Удалить</a></td>
                             <td><a asp-action="PlanRed" asp-controller="Red" asp-route-id="@i.Id">Редактировать</a></td>

@@ -8,6 +8,7 @@ using HB5.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using HB5.VM.AddVM;
+using System.Linq.Expressions;
 
 namespace HB5.Controllers
 {
@@ -48,7 +49,7 @@ namespace HB5.Controllers
             }
             else
             {
-                return RedirectToAction("OperHome", "Home");
+                return RedirectToAction("OperHome", "Home",new {idplan=idplan});
             }
         }
         [HttpPost]

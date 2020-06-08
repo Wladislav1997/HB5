@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using HB5.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using HB5.VM.DetVM;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace HB5.Controllers
 {
@@ -30,10 +32,19 @@ namespace HB5.Controllers
         {
             return RedirectToAction("PlanHome", "Home");
         }
+        [HttpGet]
         public async Task<IActionResult> OperDet(int id)
         {
             Operation op = await db.Operations.FirstAsync(p => p.Id == id);
-            return View(op);
+            OperDetVM oper = new OperDetVM();
+            oper.op = op;
+            oper.Id = op.Plan.Id;
+            return View(oper);
+        }
+        [HttpPost]
+        public IActionResult OperDet(OperDetVM oper)
+        { 
+            return RedirectToAction("OperHome", "Home",new { planid=oper.Id});
         }
         public async Task<IActionResult> PDet(int id)
         {

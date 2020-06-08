@@ -20,7 +20,7 @@ namespace HB5.Controllers
         {
             db = user;
         }
-        public IActionResult OperHome(OperVM oper, string st, int? idplan, int? idoper)
+        public async Task<IActionResult> OperHome(OperVM oper, string st, int? idplan, int? idoper)
         {
             IQueryable<Operation> operat = db.Operations.Include(p => p.Plan).Include(c => c.p);
             operat = operat.Where(p => p.Plan.User.Email == User.Identity.Name);
@@ -28,7 +28,10 @@ namespace HB5.Controllers
             {
                 operat = operat.Where(p => p.PlanId == idplan);
                 OperVM oper1 = new OperVM();
+                Plan pl = await db.Plans.FirstAsync(p => p.Id == idplan);
                 oper1.Operations = operat;
+                oper1.Date = pl.Data;
+                oper1.DatePer = pl.DataPeriod;
                 return View(oper1);
 
             }

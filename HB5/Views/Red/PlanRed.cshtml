@@ -3,7 +3,7 @@
     ViewBag.Title = "Редактирование Плана";
 }
 <div class="container">
-    <form asp-action="PlanAdd" asp-controller="Add">
+    <form asp-action="PlanRed" asp-controller="Red">
         <div class="validation" asp-validation-summary="All"></div>
         <input type="hidden" asp-for="idplan" class="form-control" value="@Model.idplan"/>
         <div class="form-group">

@@ -1,20 +1,35 @@
-﻿@model HB5.Models.Operation
+﻿@model HB5.VM.DetVM.OperDetVM
 @{
-    ViewBag.Title = "Просмотр операции";
+    ViewBag.Title = "Просмотр Операции";
 }
 <div class="container">
-    <dl class="dl-horizontal">
-        <dt>Имя</dt>
-        <dd>@Model.Name</dd>
-        <dt>Действие</dt>
-        <dd>@Model.NameAct</dd>
-        <dt>Сумма</dt>
-        <dd>@Model.Sum</dd>
-        <dt>Коментарий</dt>
-        <dd>@Model.Coment</dd>
-        <dt>Процент</dt>
-        <dd>@Model.Procent</dd>
-        <dt>Совершонных на сумму</dt>
-        <dd>@Model.SumP</dd>
-    </dl>
+    <form asp-action="OperDet" asp-controller="Det">
+        <div class="form-group">
+            <label asp-for="op.Name" class="control-label">Название</label>
+            <input type="text" asp-for="op.Name" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="op.NameAct" class="control-label">Действие</label>
+            <input type="text" asp-for="op.NameAct" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="op.Sum" class="control-label">Плановая сумма</label>
+            <input type="number" asp-for="op.Sum" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="op.Coment" class="control-label">Комент</label>
+            <input type="text" asp-for="op.Coment" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="op.SumP" class="control-label">Реальная сумма</label>
+            <input type="number" asp-for="op.SumP" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <label asp-for="op.Procent" class="control-label">Процент выполнения</label>
+            <input type="number" asp-for="op.Procent" class="form-control" disabled />
+        </div>
+        <div class="form-group">
+            <input type="submit" value=" Назад" class="btn btn-default" />
+        </div>
+    </form>
 </div>

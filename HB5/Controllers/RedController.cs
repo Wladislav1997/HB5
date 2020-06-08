@@ -38,9 +38,10 @@ namespace HB5.Controllers
             if (ModelState.IsValid)
             {
                 Plan pl = await db.Plans.FirstAsync(p => p.Id == plan.idplan);
-                db.Plans.Remove(pl);
-                User user = await db.Users.FirstAsync(p => p.Email == User.Identity.Name);
-                db.Plans.Add(new Plan { Name = plan.Name, Data = plan.Data, DataPeriod = plan.DataPeriod, User = user });
+                pl.Name = plan.Name;
+                pl.Data = plan.Data;
+                pl.DataPeriod = plan.DataPeriod;
+                db.Plans.Update(pl);
                 await db.SaveChangesAsync();
                 return RedirectToAction("PlanHome", "Home");
             }
