@@ -32,6 +32,7 @@ namespace HB5.Controllers
                 oper1.Operations = operat;
                 oper1.Date = pl.Data;
                 oper1.DatePer = pl.DataPeriod;
+                oper1.idplan = idplan;
                 return View(oper1);
 
             }

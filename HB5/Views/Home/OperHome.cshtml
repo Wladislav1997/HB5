@@ -5,9 +5,13 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            @if (Model.Id != 0&&Model.Date<=DateTime.Now&&Model.DatePer>=DateTime.Now)
+            @if (Model.idplan != null&&Model.Date>DateTime.Now)
             {
-                <a asp-controller="Add" asp-action="OperAdd" asp-route-id="@Model.Id">Добавить операцию</a>
+                <a asp-controller="Add" asp-action="OperAdd" asp-route-idplan="@Model.idplan">Добавить операцию</a>
+            }
+            else if(Model.idplan != null)
+            {
+
             }
             else
             {
@@ -101,13 +105,13 @@
                         <td>@i.SumP</td>
                         <td>@i.Procent</td>
 
-                        <td><a asp-action="PlanHome" asp-controller="Home" asp-route-idplan="@i.Id"></a>План</td>
-                        <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id"></a>Просмотр</td>
+                        <td><a asp-action="PlanHome" asp-controller="Home" asp-route-idplan="@i.Id">План</a></td>
+                        <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
                         <td><a asp-action="P1PHome" asp-controller="Home" asp-route-idoper="@i.Id">Совершонные</a></td>
                         @if (i.Plan.Data > DateTime.Now)
                         {
-                            <td><a asp-action="OperDel" asp-controller="Del" asp-route-id="@i.Id"></a>Удалить</td>
-                            <td><a asp-action="OperRed" asp-controller="Red" asp-route-id="@i.Id"></a>Редактировать</td>
+                            <td><a asp-action="OperDel" asp-controller="Del" asp-route-id="@i.Id">Удалить</a></td>
+                            <td><a asp-action="OperRed" asp-controller="Red" asp-route-id="@i.Id">Редактировать</a></td>
                         }
                     </tr>
                 }

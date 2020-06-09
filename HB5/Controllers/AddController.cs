@@ -49,14 +49,14 @@ namespace HB5.Controllers
             }
             else
             {
-                return RedirectToAction("OperHome", "Home",new {idplan=idplan});
+                return RedirectToAction("PlanHome", "Home");
             }
         }
         [HttpPost]
         public async Task<IActionResult> OperAdd(OperAddVM oper)
         {
             Plan pl = await db.Plans.FirstOrDefaultAsync(u => u.Id == oper.idplan);
-            if (pl.DataPeriod < DateTime.Now)
+            if (ModelState.IsValid)
             {
                 db.Operations.Add(new Operation { Name = oper.Name, NameAct = oper.NameAct, Coment = oper.Coment, Sum = oper.Sum, Plan = pl });
                 await db.SaveChangesAsync();

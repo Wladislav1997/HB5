@@ -22,6 +22,6 @@ namespace HB5.VM.HomeVM
         public int minpr { get; set; }
         public DateTime Date { get; set; }
         public DateTime DatePer { get; set; }
-        public int Id { get; set; }
+        public int? idplan { get; set; }
     }
 }
