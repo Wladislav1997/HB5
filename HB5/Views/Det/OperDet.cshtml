@@ -5,6 +5,7 @@
 <div class="container">
     <form asp-action="OperDet" asp-controller="Det">
         <div class="form-group">
+            <input type="hidden" asp-for="Id" value="@Model.Id"/>
             <label asp-for="op.Name" class="control-label">Название</label>
             <input type="text" asp-for="op.Name" class="form-control" disabled />
         </div>

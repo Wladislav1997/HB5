@@ -105,7 +105,7 @@
                         <td>@i.SumP</td>
                         <td>@i.Procent</td>
 
-                        <td><a asp-action="PlanHome" asp-controller="Home" asp-route-idplan="@i.Id">План</a></td>
+                        <td><a asp-action="PlanHome" asp-controller="Home" asp-route-idplan="@Model.idplan">План</a></td>
                         <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
                         <td><a asp-action="P1PHome" asp-controller="Home" asp-route-idoper="@i.Id">Совершонные</a></td>
                         @if (i.Plan.Data > DateTime.Now)

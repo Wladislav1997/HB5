@@ -36,5 +36,22 @@ namespace HB5.Controllers
             await db.SaveChangesAsync();
             return RedirectToAction("PlanHome", "Home");
         }
+        [HttpGet]
+        public async Task<IActionResult> OperDel(int? id)
+        {
+            Plan p = await db.Plans.FirstAsync(p => p.Id == id);
+            if (p != null)
+            {
+                return View(p);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        public async Task<IActionResult> OperDel(Operation op)
+        {
+            db.Operations.Remove(op);
+            await db.SaveChangesAsync();
+            return RedirectToAction("OperHome", "Home");
+        }
     }
 }

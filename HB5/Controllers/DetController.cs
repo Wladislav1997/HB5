@@ -38,13 +38,13 @@ namespace HB5.Controllers
             Operation op = await db.Operations.FirstAsync(p => p.Id == id);
             OperDetVM oper = new OperDetVM();
             oper.op = op;
-            oper.Id = op.Plan.Id;
+            oper.Id = op.PlanId;
             return View(oper);
         }
         [HttpPost]
         public IActionResult OperDet(OperDetVM oper)
         { 
-            return RedirectToAction("OperHome", "Home",new { planid=oper.Id});
+            return RedirectToAction("OperHome", "Home",new { idplan=oper.Id});
         }
         public async Task<IActionResult> PDet(int id)
         {

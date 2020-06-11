@@ -64,12 +64,12 @@ namespace HB5.Controllers
                 }
             }
         }
-        public IActionResult PlanHome(PlanHomeVM plan, int idplan)
+        public IActionResult PlanHome(PlanHomeVM plan, int? idplan)
         {
             IQueryable<Models.Plan> pl = db.Plans.Include(c => c.User).Include(u => u.Operations).ThenInclude(u => u.p);
             pl = pl.Where(p => p.User.Email == User.Identity.Name);
 
-            if (idplan != 0)
+            if (idplan != null)
             {
                 pl = pl.Where(p => p.Id == idplan);
                 PlanHomeVM plan1 = new PlanHomeVM();
