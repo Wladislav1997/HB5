@@ -47,6 +47,35 @@ namespace HB5.Controllers
             }
             return View(plan);
         }
+        [HttpGet]
+        public async Task<IActionResult> OperRed(int? id)
+        {
+            Operation op = await db.Operations.FirstOrDefaultAsync(p => p.Id == id);
+            OperRedVM o = new OperRedVM();
+            o.Name = op.Name;
+            o.NameAct= op.NameAct;
+            o.Sum = op.Sum;
+            o.Coment = op.Coment;
+            o.idplan = op.PlanId;
+            o.idoper = id;
+            return View(o);
+        }
+        [HttpPost]
+        public async Task<IActionResult> OperRed(OperRedVM op)
+        {
+            if (ModelState.IsValid)
+            {
+                Operation o = await db.Operations.FirstOrDefaultAsync(p => p.Id == op.idoper);
+                o.Name = op.Name;
+                o.NameAct = op.NameAct;
+                o.Sum = op.Sum;
+                o.Coment = op.Coment;
+                db.Operations.Update(o);
+                await db.SaveChangesAsync();
+                return RedirectToAction("OperHome", "Home",new { idplan = op.idplan });
+            }
+            return View(op);
+        }
     }
 }
 

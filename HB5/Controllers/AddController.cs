@@ -65,7 +65,7 @@ namespace HB5.Controllers
             return View(oper);
         }
         [HttpGet]
-        public IActionResult PAdd(int? idoper)
+        public IActionResult P1PAdd(int? idoper)
         {
             if (idoper != null)
             {
@@ -79,7 +79,7 @@ namespace HB5.Controllers
             }
         }
         [HttpPost]
-        public async Task<IActionResult> PAdd(PAddVM p)
+        public async Task<IActionResult> P1PAdd(PAddVM p)
         {
             Operation op = await db.Operations.FirstOrDefaultAsync(u => u.Id == p.idoper);
             if (op.Plan.Data < DateTime.Now && op.Plan.DataPeriod > DateTime.Now)

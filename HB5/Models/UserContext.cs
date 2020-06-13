@@ -17,7 +17,7 @@ namespace HB5.Models
         public UserContext(DbContextOptions<UserContext> options)
             : base(options)
         {
-            /*Database.EnsureDeleted(); */  // удаляем бд со старой схемой
+            /*Database.EnsureDeleted();*/   // удаляем бд со старой схемой
             Database.EnsureCreated();   // создаем бд с новой схемой
         }
     }

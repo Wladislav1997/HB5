@@ -1,5 +1,120 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model HB5.VM.HomeVM.P1PHomeVM
 @{
+    ViewBag.Title = "Совершонные Операции";
 }
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <p>@Model.DataPeriod</p>
+            @*
+        @if (Model.idoper != null && Model.Data <= DateTime.Now&&Model.DataPeriod>= DateTime.Now)
+        {
+            <a asp-controller="Add" asp-action="P1PAdd" asp-route-idoper="@Model.idoper">Добавить операцию</a>
+        }
+        else if (Model.idoper != null)
+        {
+
+        }
+        else
+        {
+            <a asp-controller="Add" asp-action="P1PAdd">Добавить операцию</a>
+        }*@
+            <h5>Поиск</h5>
+            <form asp-action="OperHome" asp-controller="home">
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label">Название</label>
+                    <input type="text" asp-for="Name" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label asp-for="NameAct" class="control-label">Название плана</label>
+                    <input type="text" asp-for="NameAct" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Период актуальности операции</label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label" asp-for="StData">от</label>
+                    <div class="col-5">
+                        <input type="datetime-local" asp-for="StData" class="form-control" value="2000-01-01T00:00">
+                    </div>
+                    <label class="col-form-label" asp-for="FinData">до</label>
+                    <div class="col-5">
+                        <input type="datetime-local" asp-for="FinData" class="form-control" value="2000-01-01T00:00">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NameAct" class="control-label">Действие</label>
+                    <select asp-for="NameAct" class="form-control">
+                        <option value="расход">расход</option>
+                        <option value="доход">доход</option>
+                        <option selected value="ноль"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Планируемая сумма</label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label" asp-for="minsum">от</label>
+                    <div class="col">
+                        <input type="number" asp-for="minsum" class="form-control" value="0">
+                    </div>
+                    <label class="col-form-label" asp-for="maxsum">до</label>
+                    <div class="col">
+                        <input type="number" asp-for="maxsum" class="form-control" value="0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Поиск" class="btn btn-default" />
+                </div>
+            </form>
+        </div>
+        <div class="col-8">
+            <h5>Результат поиска</h5>
+            <table class="table">
+                <tr><td>Название</td><td>Действие</td><td>Cумма</td><td>Дата</td><td></td><td></td></tr>
+                @if (Model.idoper != null)
+                {
+                    @foreach (var i in Model.Ps)
+                    {
+                        <tr>
+                            <td>@i.Name</td>
+                            <td>@i.Operation.NameAct</td>
+                            <td>@i.Sum</td>
+                            <td>@i.Data</td>
+                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idoper="@i.Id">Операция</a></td>
+                            <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    @foreach (var i in Model.P1s)
+                    {
+                        <tr>
+                            <td>@i.Name</td>
+                            <td>@i.NameAct</td>
+                            <td>@i.Sum</td>
+                            <td>@i.Data</td>
+                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idoper="@i.Id">Операция</a></td>
+                            <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
+
+                        </tr>
+                    }
+                    @foreach (var i in Model.Ps)
+                    {
+                        <tr>
+                            <td>@i.Name</td>
+                            <td>@i.Operation.NameAct</td>
+                            <td>@i.Sum</td>
+                            <td>@i.Data</td>
+                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idoper="@i.Id">Операция</a></td>
+                            <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
+
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+    </div>
+</div>

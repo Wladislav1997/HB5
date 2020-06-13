@@ -20,7 +20,7 @@ namespace HB5.Controllers
         {
             db = user;
         }
-        public async Task<IActionResult> OperHome(OperVM oper, string st, int? idplan, int? idoper)
+        public async Task<IActionResult> OperHome(OperVM oper, string st, int? idplan, int? idp)
         {
             IQueryable<Operation> operat = db.Operations.Include(p => p.Plan).Include(c => c.p);
             operat = operat.Where(p => p.Plan.User.Email == User.Identity.Name);
@@ -47,9 +47,10 @@ namespace HB5.Controllers
                 }
                 else
                 {
-                    if (idoper != null)
+                    if (idp != null)
                     {
-                        operat = operat.Where(p => p.Id == idoper);
+                        P p1= await db.Ps.FirstOrDefaultAsync(p => p.Id == idp);
+                        operat = operat.Where(p => p.Id == p1.OperationId);
                         OperVM oper1 = new OperVM();
                         oper1.Operations = operat;
                         return View(oper1);
@@ -64,14 +65,14 @@ namespace HB5.Controllers
                 }
             }
         }
-        public IActionResult PlanHome(PlanHomeVM plan, int? idplan)
+        public async Task<IActionResult> PlanHome(PlanHomeVM plan, int? idoper)
         {
             IQueryable<Models.Plan> pl = db.Plans.Include(c => c.User).Include(u => u.Operations).ThenInclude(u => u.p);
             pl = pl.Where(p => p.User.Email == User.Identity.Name);
-
-            if (idplan != null)
+            if (idoper != null)
             {
-                pl = pl.Where(p => p.Id == idplan);
+                Operation op = await db.Operations.FirstOrDefaultAsync(p => p.Id == idoper);
+                pl = pl.Where(p => p.Id == op.PlanId);
                 PlanHomeVM plan1 = new PlanHomeVM();
                 plan1.pl = pl;
                 return View(plan1);
@@ -87,21 +88,37 @@ namespace HB5.Controllers
         public IActionResult P1PHome(P1PHomeVM p1P, int? idoper)
         {
             IQueryable<P> p = db.Ps.Include(c => c.Operation).ThenInclude(u => u.Plan).ThenInclude(u => u.User);
-            IQueryable<P1> p1 = db.P1s.Include(c => c.User);
             p = p.Where(p => p.Operation.Plan.User.Email == User.Identity.Name);
-            p1 = p1.Where(p => p.User.Email == User.Identity.Name);
-
             if (idoper != null)
             {
-                p = p.Where(p => p.Id == idoper);
+                p = p.Where(p => p.OperationId == idoper);
+                DateTime data = new DateTime();
+                DateTime dataper=new DateTime();
+                DateTime r = new DateTime();
+                foreach (P p1 in p)
+                {
+                    data = p1.Operation.Plan.Data;
+                    dataper = p1.Operation.Plan.DataPeriod;
+                    break;
+                }
                 P1PHomeVM plan1 = new P1PHomeVM();
-                plan1.Ps = p;
-                return View(plan1);
+                if(data!= r && dataper!=r)
+                {
+                    plan1.Data = data;
+                    plan1.DataPeriod = dataper;
+                    plan1.Ps = p;
+                    plan1.idoper = idoper;
+                    return View(plan1);
+                }
+                return NotFound();
             }
             else
             {
+                IQueryable<P1> p1 = db.P1s.Include(c => c.User);
+                p1 = p1.Where(p => p.User.Email == User.Identity.Name);
                 P1PHomeVM plan1 = new P1PHomeVM();
-                plan1.P1Ps = (p, p1);
+                plan1.Ps = p;
+                plan1.P1s = p1;
                 return View(plan1);
             }
         }

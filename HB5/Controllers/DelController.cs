@@ -39,10 +39,10 @@ namespace HB5.Controllers
         [HttpGet]
         public async Task<IActionResult> OperDel(int? id)
         {
-            Plan p = await db.Plans.FirstAsync(p => p.Id == id);
-            if (p != null)
+            Operation op = await db.Operations.FirstAsync(p => p.Id == id);
+            if (op != null)
             {
-                return View(p);
+                return View(op);
             }
             return NotFound();
         }
@@ -51,7 +51,7 @@ namespace HB5.Controllers
         {
             db.Operations.Remove(op);
             await db.SaveChangesAsync();
-            return RedirectToAction("OperHome", "Home");
+            return RedirectToAction("OperHome", "Home",new { idplan=op.PlanId});
         }
     }
 }
