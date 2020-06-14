@@ -92,25 +92,19 @@ namespace HB5.Controllers
             if (idoper != null)
             {
                 p = p.Where(p => p.OperationId == idoper);
-                DateTime data = new DateTime();
-                DateTime dataper=new DateTime();
-                DateTime r = new DateTime();
-                foreach (P p1 in p)
+                P1PHomeVM plan1 = new P1PHomeVM();
+                IQueryable<Operation> ops = db.Operations.Include(c => c.Plan);
+                ops = ops.Where(p => p.Id == idoper);
+                foreach (Operation p1 in ops)
                 {
-                    data = p1.Operation.Plan.Data;
-                    dataper = p1.Operation.Plan.DataPeriod;
+                    plan1.Data= p1.Plan.Data;
+                    plan1.DataPeriod = p1.Plan.DataPeriod;
+                    plan1.Name1 = p1.Name;
                     break;
                 }
-                P1PHomeVM plan1 = new P1PHomeVM();
-                if(data!= r && dataper!=r)
-                {
-                    plan1.Data = data;
-                    plan1.DataPeriod = dataper;
-                    plan1.Ps = p;
-                    plan1.idoper = idoper;
-                    return View(plan1);
-                }
-                return NotFound();
+                plan1.Ps = p;
+                plan1.idoper = idoper;
+                return View(plan1);
             }
             else
             {

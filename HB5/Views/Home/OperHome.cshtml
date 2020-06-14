@@ -5,18 +5,6 @@
 <div class="container">
     <div class="row">
         <div class="col-4">
-            @if (Model.idplan != null&&Model.Date>DateTime.Now)
-            {
-                <a asp-controller="Add" asp-action="OperAdd" asp-route-idplan="@Model.idplan">Добавить операцию</a>
-            }
-            else if(Model.idplan != null)
-            {
-
-            }
-            else
-            {
-                <a asp-controller="Add" asp-action="OperAdd">Добавить операцию</a>
-            }
             <h5>Поиск</h5>
             <form asp-action="OperHome" asp-controller="home">
                 <div class="form-group">
@@ -93,30 +81,42 @@
             </form>
         </div>
         <div class="col-8">
+            @if (Model.idplan != null && Model.Date > DateTime.Now)
+            {
+                <a asp-controller="Add" asp-action="OperAdd" asp-route-idplan="@Model.idplan">Добавить операцию</a>
+            }
+            else if (Model.idplan != null)
+            {
+
+            }
+            else
+            {
+                <a asp-controller="Add" asp-action="OperAdd">Добавить операцию</a>
+            }
             <h5>Результат поиска</h5>
             <table class="table">
                 <tr><td>Название</td><td>Действие</td><td>Плановая сумма</td><td>Реальная сумма</td><td>Процент</td><td></td></tr>
                 @foreach (var i in Model.Operations)
                 {
-            <tr>
-                <td>@i.Name</td>
-                <td>@i.NameAct</td>
-                <td>@i.Sum</td>
-                <td>@i.SumP</td>
-                <td>@i.Procent</td>
+                    <tr>
+                        <td>@i.Name</td>
+                        <td>@i.NameAct</td>
+                        <td>@i.Sum</td>
+                        <td>@i.SumP</td>
+                        <td>@i.Procent</td>
 
-                <td><a asp-action="PlanHome" asp-controller="Home" asp-route-idoper="@i.Id">План</a></td>
-                <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
-                @if (i.Plan.Data > DateTime.Now)
-                {
-                    <td><a asp-action="OperDel" asp-controller="Del" asp-route-id="@i.Id">Удалить</a></td>
-                    <td><a asp-action="OperRed" asp-controller="Red" asp-route-id="@i.Id">Редактировать</a></td>
-                }
-                else
-                {
-                    <td><a asp-action="P1PHome" asp-controller="Home" asp-route-idoper="@i.Id">Совершонные</a></td>
-                }
-            </tr>
+                        <td><a asp-action="PlanHome" asp-controller="Home" asp-route-idoper="@i.Id">План</a></td>
+                        <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
+                        @if (i.Plan.Data > DateTime.Now)
+                        {
+                            <td><a asp-action="OperDel" asp-controller="Del" asp-route-id="@i.Id">Удалить</a></td>
+                            <td><a asp-action="OperRed" asp-controller="Red" asp-route-id="@i.Id">Редактировать</a></td>
+                        }
+                        else
+                        {
+                            <td><a asp-action="P1PHome" asp-controller="Home" asp-route-idoper="@i.Id">Совершонные</a></td>
+                        }
+                    </tr>
                 }
             </table>
         </div>

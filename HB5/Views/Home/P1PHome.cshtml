@@ -4,21 +4,7 @@
 }
 <div class="container">
     <div class="row">
-        <div class="col-4">
-            <p>@Model.DataPeriod</p>
-            @*
-        @if (Model.idoper != null && Model.Data <= DateTime.Now&&Model.DataPeriod>= DateTime.Now)
-        {
-            <a asp-controller="Add" asp-action="P1PAdd" asp-route-idoper="@Model.idoper">Добавить операцию</a>
-        }
-        else if (Model.idoper != null)
-        {
-
-        }
-        else
-        {
-            <a asp-controller="Add" asp-action="P1PAdd">Добавить операцию</a>
-        }*@
+        <div class="col-4"> 
             <h5>Поиск</h5>
             <form asp-action="OperHome" asp-controller="home">
                 <div class="form-group">
@@ -69,7 +55,19 @@
             </form>
         </div>
         <div class="col-8">
-            <h5>Результат поиска</h5>
+            @if (Model.idoper != null && Model.Data <= DateTime.Now && Model.DataPeriod >= DateTime.Now)
+            {
+                <a asp-controller="Add" asp-action="P1PAdd" asp-route-idoper="@Model.idoper">Совершить операцию</a>
+            }
+            else if (Model.idoper != null)
+            {
+
+            }
+            else
+            {
+                <a asp-controller="Add" asp-action="P1PAdd">Совершить операцию</a>
+            }
+            <h5>Совершонные операции</h5>
             <table class="table">
                 <tr><td>Название</td><td>Действие</td><td>Cумма</td><td>Дата</td><td></td><td></td></tr>
                 @if (Model.idoper != null)
@@ -81,7 +79,7 @@
                             <td>@i.Operation.NameAct</td>
                             <td>@i.Sum</td>
                             <td>@i.Data</td>
-                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idoper="@i.Id">Операция</a></td>
+                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idp="@i.Id">Операция</a></td>
                             <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
 
                         </tr>
@@ -96,7 +94,7 @@
                             <td>@i.NameAct</td>
                             <td>@i.Sum</td>
                             <td>@i.Data</td>
-                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idoper="@i.Id">Операция</a></td>
+                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idp="@i.Id">Операция</a></td>
                             <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
 
                         </tr>
@@ -108,7 +106,7 @@
                             <td>@i.Operation.NameAct</td>
                             <td>@i.Sum</td>
                             <td>@i.Data</td>
-                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idoper="@i.Id">Операция</a></td>
+                            <td><a asp-action="OperHome" asp-controller="Home" asp-route-idp="@i.Id">Операция</a></td>
                             <td><a asp-action="OperDet" asp-controller="Det" asp-route-id="@i.Id">Просмотр</a></td>
 
                         </tr>

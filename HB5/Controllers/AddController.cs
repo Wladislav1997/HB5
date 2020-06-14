@@ -55,9 +55,9 @@ namespace HB5.Controllers
         [HttpPost]
         public async Task<IActionResult> OperAdd(OperAddVM oper)
         {
-            Plan pl = await db.Plans.FirstOrDefaultAsync(u => u.Id == oper.idplan);
             if (ModelState.IsValid)
             {
+                Plan pl = await db.Plans.FirstOrDefaultAsync(u => u.Id == oper.idplan);
                 db.Operations.Add(new Operation { Name = oper.Name, NameAct = oper.NameAct, Coment = oper.Coment, Sum = oper.Sum, Plan = pl });
                 await db.SaveChangesAsync();
                 return RedirectToAction("OperHome", "Home", new { idplan = oper.idplan });
@@ -69,53 +69,73 @@ namespace HB5.Controllers
         {
             if (idoper != null)
             {
-                PAddVM p = new PAddVM();
+                P1PAddVM p = new P1PAddVM();
                 p.idoper = idoper;
                 return View(p);
             }
             else
             {
-                return RedirectToAction("OperHome", "Home");
+                P1PAddVM p = new P1PAddVM();
+                return View(p);
             }
         }
         [HttpPost]
-        public async Task<IActionResult> P1PAdd(PAddVM p)
+        public async Task<IActionResult> P1PAdd(P1PAddVM p)
         {
-            Operation op = await db.Operations.FirstOrDefaultAsync(u => u.Id == p.idoper);
-            if (op.Plan.Data < DateTime.Now && op.Plan.DataPeriod > DateTime.Now)
+            if (p.idoper != null)
             {
-                db.Ps.Add(new P { Name = p.Name, Data = p.Data, Coment = p.Coment, Sum = p.Sum, Operation = op });
-                // считаем общую сумму для операции и процент её выполнения
-                foreach (P p1 in op.p)
+                if (ModelState.IsValid)
                 {
-                    op.SumP += p1.Sum;// общая сумма всех соверш опер
+                    IQueryable<Operation> ops = db.Operations.Include(c => c.Plan).Include(p => p.p);
+                    ops = ops.Where(u => u.Id == p.idoper);
+                    Operation o = new Operation();
+                    foreach (Operation op in ops)
+                    {
+                        o = op;
+                        break;
+                    }
+                    db.Ps.Add(new P { Name = p.Name, Data = DateTime.Now, Coment = p.Coment, Sum = p._Sum, Operation = o });
+                    await db.SaveChangesAsync();
+                    int pr1 = o.Sum / 100;
+                    foreach (P p1 in o.p)
+                    {
+                        o.SumP += p1.Sum;// общая сумма всех соверш опер
+                    }
+                    o.Procent = o.SumP / pr1;
+                    // считаем процент выполнения плана складываем проценты всех операций и делим на кол во опер
+                    int count = 0;
+                    int pr = 0;
+                    foreach (Operation op1 in o.Plan.Operations)
+                    {
+                        pr += op1.Procent;
+                        count++;
+                    }
+                    o.Plan.Procent = pr / count;
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("P1PHome", "Home", new { idoper = p.idoper });
                 }
-                op.Procent = op.SumP / (op.Sum / 100);
-                // считаем процент выполнения плана складываем проценты всех операций и делим на кол во опер
-                int count = 0;
-                int pr = 0;
-                foreach (Operation op1 in op.Plan.Operations)
-                {
-                    pr += op1.Procent;
-                    count++;
-                }
-                op.Plan.Procent = pr / count;
-                await db.SaveChangesAsync();
-                return RedirectToAction("P1PHome", "Home");
+                return View(p);
+
             }
-            return View(p);
+            else
+            {
+                if (ModelState.IsValid)
+                {
+                    IQueryable<User> users = db.Users.Include(c => c.P1s);
+                    users = users.Where(u => u.Email == User.Identity.Name);
+                    User us = new User();
+                    foreach(User u in users)
+                    {
+                        us = u;
+                        break;
+                    }
+                    db.P1s.Add(new P1 { Name = p.Name, Data = DateTime.Now, Coment = p.Coment, Sum = p._Sum, NameAct = p.NameAct,User=us });
+                    await db.SaveChangesAsync();
+                    return RedirectToAction("P1PHome", "Home");
+                }
+                return View(p);
+            }
         }
-        [HttpGet]
-        public IActionResult P1Add()
-        {
-            return View();
-        }
-        [HttpPost]
-        public async Task<IActionResult> P1Add(P1AddVM p)
-        {
-            db.P1s.Add(new P1 { Name = p.Name, Data = p.Data, Coment = p.Coment, Sum = p.Sum, NameAct = p.NameAct });
-            await db.SaveChangesAsync();
-            return RedirectToAction("P1PHome", "Home");
-        }
+        
     }
 }
