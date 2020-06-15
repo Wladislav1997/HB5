@@ -43,6 +43,7 @@ namespace HB5.Controllers
                     operat = operat.Where(p => p.Plan.Data <= DateTime.Now && p.Plan.DataPeriod >= DateTime.Now);
                     OperVM op2 = new OperVM();
                     op2.Operations = operat;
+                    op2.St = st;
                     return View(op2);
                 }
                 else

@@ -35,7 +35,7 @@ namespace HB5.Controllers
                 {
                     await Authenticate(model.Email); // аутентификация
 
-                    return RedirectToAction("OperHome", "Home", new { s = "home" });
+                    return RedirectToAction("OperHome", "Home", new { st = "home" });
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }

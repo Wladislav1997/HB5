@@ -23,5 +23,6 @@ namespace HB5.VM.HomeVM
         public DateTime Date { get; set; }
         public DateTime DatePer { get; set; }
         public int? idplan { get; set; }
+        public string St { get; set; }
     }
 }

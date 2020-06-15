@@ -6,10 +6,10 @@ using HB5.Models;
 
 namespace HB5.VM.DetVM
 {
-    public class OperDetVM
+    public class PDetVM
     {
-        public Operation op { get; set; }
-        public int? Id { get; set; }
-        public string st { get; set; }
+        public P p { get; set; }
+        public int? idoper { get; set; }
+        public string NameAct { get; set; }
     }
 }
