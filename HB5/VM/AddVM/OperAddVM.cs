@@ -24,7 +24,7 @@ namespace HB5.VM.AddVM
             
             if (this.Sum > 100000000||this.Sum<0)
             {
-                errors.Add(new ValidationResult(" Сумма операции больше 100000000!"));
+                errors.Add(new ValidationResult(" Сумма операции больше 100000000 или меньше 0!"));
             }
             
             return errors;

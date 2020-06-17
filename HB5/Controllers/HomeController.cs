@@ -74,17 +74,53 @@ namespace HB5.Controllers
             {
                 Operation op = await db.Operations.FirstOrDefaultAsync(p => p.Id == idoper);
                 pl = pl.Where(p => p.Id == op.PlanId);
-                PlanHomeVM plan1 = new PlanHomeVM();
-                plan1.pl = pl;
-                return View(plan1);
+                plan.pl = SearchPlan(plan, 1, pl);
+                return View(plan);
             }
             else
             {
                 PlanHomeVM plan1 = new PlanHomeVM();
-                plan1.pl = pl;
-                return View(plan1);
+                plan.pl = SearchPlan(plan, 1, pl);
+                return View(plan);
             }
 
+        }
+        private IQueryable<Plan> SearchPlan(PlanHomeVM plan, int count, IQueryable<Plan> plans)
+        {
+            if (plan.Name != null && count==1)
+            {
+                plans = plans.Where(p => p.Name == plan.Name);
+                return SearchPlan(plan, 2, plans);
+            }
+            else if (plan.maxpr != 0 && (count == 1 || count == 2))
+            {
+                plans = plans.Where(p => p.Procent >= plan.minpr && p.Procent <= plan.maxpr);
+                return SearchPlan(plan, 3, plans);
+            }
+            else if (plan.Data != null && plan.DataPer != null && (count == 1 || count == 2 || count == 3))
+            {
+                plans = plans.Where(p => p.Data >= plan.Data && p.DataPeriod <= plan.DataPer);
+                return SearchPlan(plan, 4, plans);
+            }
+            else if (plan.maxdoch != 0 && (count == 1 || count == 2 || count == 3 || count == 4))
+            {
+                plans = plans.Where(p => p.DochMonth >= plan.mindoch && p.DochMonth <= plan.maxdoch);
+                return SearchPlan(plan, 5, plans);
+            }
+            else if (plan.maxras != 0 && (count == 1 || count == 2 || count == 3 || count == 4 || count == 5))
+            {
+                plans = plans.Where(p => p.RasMonth >= plan.minras && p.RasMonth <= plan.maxras);
+                return SearchPlan(plan, 6, plans);
+            }
+            else if (plan.maxit != 0 && (count == 1 || count == 2 || count == 3 || count == 4 || count == 5 || count == 6))
+            {
+                plans = plans.Where(p => p.RaznDochRas >= plan.minit && p.RaznDochRas <= plan.maxit);
+                return SearchPlan(plan, 7, plans);
+            }
+            else
+            {
+                return plans;
+            }
         }
         public IActionResult P1PHome(P1PHomeVM p1P, int? idoper)
         {
