@@ -27,13 +27,12 @@ namespace HB5.Controllers
             if (idplan != null)
             {
                 operat = operat.Where(p => p.PlanId == idplan);
-                OperVM oper1 = new OperVM();
                 Plan pl = await db.Plans.FirstAsync(p => p.Id == idplan);
-                oper1.Operations = operat;
-                oper1.Date = pl.Data;
-                oper1.DatePer = pl.DataPeriod;
-                oper1.idplan = idplan;
-                return View(oper1);
+                oper.Operations = SearchOp(oper,1,operat);
+                oper.Date = pl.Data;
+                oper.DatePer = pl.DataPeriod;
+                oper.idplan = idplan;
+                return View(oper);
 
             }
             else
@@ -41,10 +40,9 @@ namespace HB5.Controllers
                 if (st == "home")
                 {
                     operat = operat.Where(p => p.Plan.Data <= DateTime.Now && p.Plan.DataPeriod >= DateTime.Now);
-                    OperVM op2 = new OperVM();
-                    op2.Operations = operat;
-                    op2.St = st;
-                    return View(op2);
+                    oper.Operations = SearchOp(oper, 1, operat);
+                    oper.St = st;
+                    return View(oper);
                 }
                 else
                 {
@@ -52,18 +50,58 @@ namespace HB5.Controllers
                     {
                         P p1= await db.Ps.FirstOrDefaultAsync(p => p.Id == idp);
                         operat = operat.Where(p => p.Id == p1.OperationId);
-                        OperVM oper1 = new OperVM();
-                        oper1.Operations = operat;
-                        return View(oper1);
+                        oper.Operations = SearchOp(oper, 1, operat);
+                        return View(oper);
                     }
                     else
                     {
-                        OperVM op2 = new OperVM();
-                        op2.Operations = operat;
-                        return View(op2);
+                        oper.Operations = SearchOp(oper, 1, operat); ;
+                        return View(oper);
                     }
 
                 }
+            }
+        }
+        private IQueryable<Operation> SearchOp(OperVM op, int count, IQueryable<Operation> ops)
+        {
+            if (op.Name != null && count == 1)
+            {
+                ops = ops.Where(p => p.Name == op.Name);
+                return SearchOp(op, 2, ops);
+            }
+            else if (op.NamePl != null && (count == 1 || count == 2))
+            {
+                ops = ops.Where(p => p.Plan.Name == op.NamePl);
+                return SearchOp(op, 3, ops);
+            }
+            else if (op.StData != null && op.FinData != null && (count == 1 || count == 2 || count == 3))
+            {
+                ops = ops.Where(p => p.Plan.Data >= op.StData && p.Plan.DataPeriod <= op.FinData);
+                return SearchOp(op, 4, ops);
+            }
+            else if (op.NameAct == "ноль" && (count == 1 || count == 2 || count == 3 || count == 4))
+            {
+                ops = ops.Where(p => p.NameAct==op.NameAct);
+                return SearchOp(op, 5, ops);
+            }
+            else if (op.minsum != 0 && op.maxsum!=0 && (count == 1 || count == 2 || count == 3 || count == 4 || count == 5))
+            {
+                ops = ops.Where(p => p.Sum >= op.minsum && p.Sum <= op.maxsum);
+                return SearchOp(op, 6, ops);
+            }
+            else if (op.minsump != 0 && op.maxsump != 0 && (count == 1 || count == 2 || count == 3 || count == 4 || count == 5 || count == 6))
+            {
+                ops = ops.Where(p => p.SumP >= op.minsump && p.SumP <= op.maxsump);
+                return SearchOp(op, 7, ops);
+            }
+            else if (op.minpr != 0 && op.maxpr != 0 && (count == 1 || count == 2 || count == 3 || count == 4 || count == 5 || count == 6 || count == 7))
+            {
+                ops = ops.Where(p => p.Procent >= op.minpr && p.Procent <= op.maxpr);
+                return SearchOp(op, 8, ops);
+            }
+            else
+            {
+                return ops;
             }
         }
         public async Task<IActionResult> PlanHome(PlanHomeVM plan, int? idoper)
