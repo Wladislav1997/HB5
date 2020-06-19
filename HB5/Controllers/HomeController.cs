@@ -79,9 +79,9 @@ namespace HB5.Controllers
                 ops = ops.Where(p => p.Plan.Data >= op.StData && p.Plan.DataPeriod <= op.FinData);
                 return SearchOp(op, 4, ops);
             }
-            else if (op.NameAct == "ноль" && (count == 1 || count == 2 || count == 3 || count == 4))
+            else if (op.NameAct != null && (count == 1 || count == 2 || count == 3 || count == 4))
             {
-                ops = ops.Where(p => p.NameAct==op.NameAct);
+                ops = ops.Where(p => p.NameAct == op.NameAct);
                 return SearchOp(op, 5, ops);
             }
             else if (op.minsum != 0 && op.maxsum!=0 && (count == 1 || count == 2 || count == 3 || count == 4 || count == 5))
@@ -167,28 +167,79 @@ namespace HB5.Controllers
             if (idoper != null)
             {
                 p = p.Where(p => p.OperationId == idoper);
-                P1PHomeVM plan1 = new P1PHomeVM();
                 IQueryable<Operation> ops = db.Operations.Include(c => c.Plan);
                 ops = ops.Where(p => p.Id == idoper);
                 foreach (Operation p1 in ops)
                 {
-                    plan1.Data= p1.Plan.Data;
-                    plan1.DataPeriod = p1.Plan.DataPeriod;
-                    plan1.Name1 = p1.Name;
+                    p1P.Data= p1.Plan.Data;
+                    p1P.DataPeriod = p1.Plan.DataPeriod;
                     break;
                 }
-                plan1.Ps = p;
-                plan1.idoper = idoper;
-                return View(plan1);
+                p1P.Ps = SearchP(p1P,1,p);
+                p1P.idoper = idoper;
+                return View(p1P);
             }
             else
             {
                 IQueryable<P1> p1 = db.P1s.Include(c => c.User);
                 p1 = p1.Where(p => p.User.Email == User.Identity.Name);
-                P1PHomeVM plan1 = new P1PHomeVM();
-                plan1.Ps = p;
-                plan1.P1s = p1;
-                return View(plan1);
+                p1P.Ps = SearchP(p1P, 1, p);
+                p1P.P1s = SearchP1(p1P, 1, p1);
+                return View(p1P);
+            }
+        }
+        private IQueryable<P1> SearchP1(P1PHomeVM p1, int count, IQueryable<P1> p1s)
+        {
+            if (p1.Name != null && count == 1)
+            {
+                p1s = p1s.Where(p => p.Name == p1.Name);
+                return SearchP1(p1, 2, p1s);
+            }
+            else if (p1.NameAct!=null && (count == 1 || count == 2))
+            {
+                p1s = p1s.Where(p => p.NameAct ==p1.NameAct);
+                return SearchP1(p1, 3, p1s);
+            }
+            else if (p1.StData != null && p1.FinData != null && (count == 1 || count == 2 || count == 3))
+            {
+                p1s = p1s.Where(p => p.Data >= p1.StData && p.Data <= p1.FinData);
+                return SearchP1(p1, 4, p1s);
+            }
+            else if (p1.minsum!= 0 && p1.maxsum != 0 && (count == 1 || count == 2 || count == 3 || count == 4))
+            {
+                p1s = p1s.Where(p => p.Sum >= p1.minsum && p.Sum <= p1.maxsum);
+                return SearchP1(p1, 5, p1s);
+            }
+            else
+            {
+                return p1s;
+            }
+        }
+        private IQueryable<P> SearchP(P1PHomeVM p1, int count, IQueryable<P> p1s)
+        {
+            if (p1.Name != null && count == 1)
+            {
+                p1s = p1s.Where(p => p.Name == p1.Name);
+                return SearchP(p1, 2, p1s);
+            }
+            else if (p1.NameAct != null && (count == 1 || count == 2))
+            {
+                p1s = p1s.Where(p => p.Operation.NameAct == p1.NameAct);
+                return SearchP(p1, 3, p1s);
+            }
+            else if (p1.StData != null && p1.FinData != null && (count == 1 || count == 2 || count == 3))
+            {
+                p1s = p1s.Where(p => p.Data >= p1.StData && p.Data <= p1.FinData);
+                return SearchP(p1, 4, p1s);
+            }
+            else if (p1.minsum != 0 && p1.maxsum != 0 && (count == 1 || count == 2 || count == 3 || count == 4))
+            {
+                p1s = p1s.Where(p => p.Sum >= p1.minsum && p.Sum <= p1.maxsum);
+                return SearchP(p1, 5, p1s);
+            }
+            else
+            {
+                return p1s;
             }
         }
     }

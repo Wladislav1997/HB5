@@ -6,47 +6,44 @@
     <div class="row">
         <div class="col-4"> 
             <h5>Поиск</h5>
-            <form asp-action="OperHome" asp-controller="home">
+            <form asp-action="P1PHome" asp-controller="home">
                 <div class="form-group">
                     <label asp-for="Name" class="control-label">Название</label>
                     <input type="text" asp-for="Name" class="form-control" />
                 </div>
-                <div class="form-group">
-                    <label asp-for="NameAct" class="control-label">Название плана</label>
-                    <input type="text" asp-for="NameAct" class="form-control" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label">Период актуальности операции</label>
-                </div>
-                <div class="form-group row">
-                    <label class="col-form-label" asp-for="StData">от</label>
-                    <div class="col-5">
-                        <input type="datetime-local" asp-for="StData" class="form-control" value="2000-01-01T00:00">
-                    </div>
-                    <label class="col-form-label" asp-for="FinData">до</label>
-                    <div class="col-5">
-                        <input type="datetime-local" asp-for="FinData" class="form-control" value="2000-01-01T00:00">
-                    </div>
-                </div>
+
                 <div class="form-group">
                     <label asp-for="NameAct" class="control-label">Действие</label>
                     <select asp-for="NameAct" class="form-control">
                         <option value="расход">расход</option>
                         <option value="доход">доход</option>
-                        <option selected value="ноль"></option>
+                        <option selected></option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="control-label">Планируемая сумма</label>
+                    <label class="control-label">Сумма</label>
                 </div>
                 <div class="form-group row">
                     <label class="col-form-label" asp-for="minsum">от</label>
                     <div class="col">
-                        <input type="number" asp-for="minsum" class="form-control" value="0">
+                        <input type="number" asp-for="minsum" class="form-control">
                     </div>
                     <label class="col-form-label" asp-for="maxsum">до</label>
                     <div class="col">
-                        <input type="number" asp-for="maxsum" class="form-control" value="0">
+                        <input type="number" asp-for="maxsum" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Дата</label>
+                </div>
+                <div class="form-group row">
+                    <label class="col-form-label" asp-for="StData">от</label>
+                    <div class="col-5">
+                        <input type="datetime-local" asp-for="StData" class="form-control">
+                    </div>
+                    <label class="col-form-label" asp-for="FinData">до</label>
+                    <div class="col-5">
+                        <input type="datetime-local" asp-for="FinData" class="form-control">
                     </div>
                 </div>
                 <div class="form-group">
