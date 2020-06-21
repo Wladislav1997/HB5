@@ -58,6 +58,7 @@ namespace HB5.Controllers
             if (ModelState.IsValid)
             {
                 Plan pl = await db.Plans.FirstOrDefaultAsync(u => u.Id == oper.idplan);
+                pl.SumPlOper += oper.Sum;
                 db.Operations.Add(new Operation { Name = oper.Name, NameAct = oper.NameAct, Coment = oper.Coment, Sum = oper.Sum, Plan = pl });
                 await db.SaveChangesAsync();
                 return RedirectToAction("OperHome", "Home", new { idplan = oper.idplan });
@@ -97,10 +98,7 @@ namespace HB5.Controllers
                     db.Ps.Add(new P { Name = p.Name, Data = DateTime.Now, Coment = p.Coment, Sum = p._Sum, Operation = o });
                     await db.SaveChangesAsync();
                     int pr1 = o.Sum / 100;
-                    foreach (P p1 in o.p)
-                    {
-                        o.SumP += p1.Sum;// общая сумма всех соверш опер
-                    }
+                    o.SumP += p._Sum;// общая сумма всех соверш опер
                     o.Procent = o.SumP / pr1;
                     // считаем процент выполнения плана складываем проценты всех операций и делим на кол во опер
                     int count = 0;
@@ -111,6 +109,7 @@ namespace HB5.Controllers
                         count++;
                     }
                     o.Plan.Procent = pr / count;
+                    o.Plan.SumRealOper += o.SumP;
                     await db.SaveChangesAsync();
                     return RedirectToAction("P1PHome", "Home", new { idoper = p.idoper });
                 }

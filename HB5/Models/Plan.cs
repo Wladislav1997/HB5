@@ -31,6 +31,8 @@ namespace HB5.Models
         {
             get { return dataperiod.Subtract(data); }
         }
+        public int SumPlOper { get; set; }
+        public int SumRealOper { get; set; }
 
         public List<Operation> Operations { get; set; }
 
